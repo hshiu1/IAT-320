@@ -1,8 +1,6 @@
 #include <Adafruit_CircuitPlayground.h>
 
 int capThreshold = 200;
-uint8_t pads[] = {3, 2, 0, 6, 9, 10};
-uint8_t numberOfPads = sizeof(pads)/sizeof(uint8_t);
 
 void setup() {
   // put your setup code here, to run once:
