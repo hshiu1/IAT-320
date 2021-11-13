@@ -1,29 +1,38 @@
 #include <Adafruit_CircuitPlayground.h>
-//#include <Adafruit_CPlay_NeoPixel.h>
 
 float inputVol;
 
-int ledPin = 3;
-int numPix = 3;
+int ledPin = A1;
+//#define LED_PIN    A1
+int numPix = 2;
 
-//Adafruit_CPlay_NeoPixel pixel(numPix, ledPin, NEO_GRB + NEO_KHZ800);
+Adafruit_CPlay_NeoPixel pixel = Adafruit_CPlay_NeoPixel(numPix, ledPin, NEO_GRB + NEO_KHZ800);
 
 void setup() {
-  //Serial.begin(9600);
+ // Serial.begin(9600);
   CircuitPlayground.begin();
-//  pixel.begin();
+  pixel.begin();
 }
 
 void loop() {
-  inputVol = CircuitPlayground.mic.soundPressureLevel(100);
+  inputVol = CircuitPlayground.mic.soundPressureLevel(100) - 15;
   volumeWheel();
-  //Serial.println(inputVol);
-  //moodLED();
+  //Serial.println(A1);
+  moodLED();
 }
 
 void moodLED() {
- // pixel.setPixelColor(ledPin, 255, 0, 0);
- // pixel.show();
+    pixel.setBrightness(50);
+    pixel.show();
+  if (inputVol > 0 && inputVol < 40) {
+    pixel.setPixelColor(0, 0, 0, 255);
+  } else if (inputVol > 40 && inputVol < 60){
+      pixel.setPixelColor(0, 0, 255, 0);
+    } else if (inputVol > 60 && inputVol < 70){
+        pixel.setPixelColor(0, 255, 255, 0);
+      } else if (inputVol > 70) {
+        pixel.setPixelColor(0, 255, 0, 0);
+        }
 }
 
 void volumeWheel() {
