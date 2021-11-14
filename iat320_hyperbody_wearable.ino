@@ -1,15 +1,14 @@
 #include <Adafruit_CircuitPlayground.h>
 
-float inputVol;
+float inputVol; //sound pressure level
 
-int ledPin = A1;
-//#define LED_PIN    A1
-int numPix = 2;
+int ledPin = A1; //external neopixel pin
+int numPix = 3; //number of external neopixels
 
-Adafruit_CPlay_NeoPixel pixel = Adafruit_CPlay_NeoPixel(numPix, ledPin, NEO_GRB + NEO_KHZ800);
+//declare pixel strip object to be used with the CP
+Adafruit_CPlay_NeoPixel pixel(numPix, ledPin, NEO_GRB + NEO_KHZ800);
 
 void setup() {
- // Serial.begin(9600);
   CircuitPlayground.begin();
   pixel.begin();
 }
@@ -17,24 +16,23 @@ void setup() {
 void loop() {
   inputVol = CircuitPlayground.mic.soundPressureLevel(100) - 15;
   volumeWheel();
-  //Serial.println(A1);
   moodLED();
 }
 
+//control the LEDs on the bottom of the wrist - color changes depending on volume
 void moodLED() {
+  //for every neopixel in the strip...
+  for (int i = 0; i < pixel.numPixels(); i++) {
     pixel.setBrightness(50);
     pixel.show();
-  if (inputVol > 0 && inputVol < 40) {
-    pixel.setPixelColor(0, 0, 0, 255);
-  } else if (inputVol > 40 && inputVol < 60){
-      pixel.setPixelColor(0, 0, 255, 0);
-    } else if (inputVol > 60 && inputVol < 70){
-        pixel.setPixelColor(0, 255, 255, 0);
-      } else if (inputVol > 70) {
-        pixel.setPixelColor(0, 255, 0, 0);
-        }
+    if (inputVol > 0 && inputVol < 40) pixel.setPixelColor(i, 0, 0, 255); //quiet = blue
+    else if (inputVol > 40 && inputVol < 60) pixel.setPixelColor(i, 0, 255, 0); //normal = green
+    else if (inputVol > 60 && inputVol < 70) pixel.setPixelColor(i, 255, 255, 0); //rising = yellow
+    else if (inputVol > 70) pixel.setPixelColor(i, 255, 0, 0); //loud/max = red
+  }
 }
 
+//CP onboard neopixels will light up depending on volume level. Colour also depends on volume level.
 void volumeWheel() {
 
   if (inputVol > 0) CircuitPlayground.setPixelColor(0, 51, 255, 255);
