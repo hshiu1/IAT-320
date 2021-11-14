@@ -59,7 +59,7 @@ void volumeWheel() {
   if (inputVol > 70) CircuitPlayground.setPixelColor(7, 255, 128, 0);
   else CircuitPlayground.setPixelColor(7, 0, 0, 0);
 
-  if (inputVol > 75) CircuitPlayground.setPixelColor(8, 255, 102, 102);
+  if (inputVol > 75) CircuitPlayground.setPixelColor(8, 255, 69, 0);
   else CircuitPlayground.setPixelColor(8, 0, 0, 0);
 
   if (inputVol > 85) CircuitPlayground.setPixelColor(9, 255, 0, 0);
