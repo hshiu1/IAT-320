@@ -57,8 +57,9 @@ void loop() {
   char sendto[21] = "16043601604";
   char message[100] = "IAT 320 Final Prototype presentation testing...";
   currentState = digitalRead(sensorPin);
+  unsigned long duration = pulseIn(sensorPin, HIGH, 100000);
 
-  if (lastState == LOW && currentState == HIGH) {
+  if (lastState == LOW && currentState == HIGH && duration > 300000) {
     fona.sendSMS(sendto, message);
   }
 
